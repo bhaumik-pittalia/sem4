@@ -1,0 +1,54 @@
+{%extends 'template.html'%}
+{%block title%}View Appointment{%endblock%}
+{%block menu%}{%endblock%}
+
+{%block body%}
+<div class="container">
+	<div class="col-12 col-md-6">
+		<br/>
+		<div class="card">
+			<div class="card-header">
+				Appointment details
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col">Name:</div>
+					<div class="col">{{appointment.name}}</div>
+				</div>
+				<div class="row">
+					<div class="col">Resource Name:</div>
+					<div class="col">{{resource.name}}</div>
+				</div>
+				<div class="row">
+					<div class="col">Phone:</div>
+					<div class="col">{{appointment.phone}}</div>
+				</div>
+				<div class="row">
+					<div class="col">email:</div>
+					<div class="col">{{appointment.email}}</div>
+				</div>
+				<div class="row">
+					<div class="col">Date:</div>
+					<div class="col">{{appointment.date}}</div>
+				</div>
+				<div class="row">
+					<div class="col">Time from:</div>
+					<div class="col">{{appointment.time_from}}</div>
+				</div>
+				<div class="row">
+					<div class="col">Time_to:</div>
+					<div class="col">{{appointment.time_to}}</div>
+				</div>
+				<form method="post" action="/appointment/cancel">
+					<div class="row" hidden>
+						<div class="col">id:</div>
+						<div class="col"><input type="text" name="id" value="{{appointment.key.urlsafe()}}"></div>
+					</div>
+					<br/>
+					<button type="submit" class="btn btn-danger btn-sm">Cancel appointment</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}

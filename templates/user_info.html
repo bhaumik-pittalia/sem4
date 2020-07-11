@@ -1,0 +1,59 @@
+{%extends 'template.html'%}
+{%block title%}User information{%endblock%}
+{%block menu%}{%endblock%}
+
+{%block body%}
+    <div class="container">
+        <div class="col-12 col-md-6">
+            <br/>
+            <div class="card">
+            <div class="card-header">
+                Your information
+            </div>
+            <div class="card-body">
+            <form method="POST" class="was-validated" action="/appointment/user">
+                <div class="form-group" hidden>
+                    <span for="date">Date</span>
+                    <input type="text" name="date" id="date" value="{{d}}">
+                </div>
+                <div class="form-group" hidden>
+                    <span for="month">month</span>
+                    <input type="text" name="month" id="month" value="{{m}}">
+                </div>
+                <div class="form-group" hidden>
+                    <span for="year">year</span>
+                    <input type="text" name="year" id="year" value="{{y}}">
+                </div>
+                <div class="form-group" hidden>
+                    <span for="resource">Resource</span>
+                    <input type="text" name="resource" id="resource" value="{{resource.key.urlsafe()}}">
+                </div>
+                <div class="form-group" hidden>
+                    <span for="schedule">Schedule</span>
+                    <input type="text" name="schedule" id="schedule" value="{{schedule.key.urlsafe()}}">
+                </div>
+                <div class="form-group">
+                    <span>Appointment on date : {{d}}-{{m}}-{{y}}</span>
+                </div>
+                <div class="form-group">
+                    <span for="resource">Resource name</span>
+                    <input type="text" class="form-control" name="resource" value="{{resource.name}}" id="resource" disabled>
+                </div>
+                <div class="form-group">
+                    <span for="name">Name</span>
+                    <input type="text" class="form-control" name="name" id="name" pattern="[a-z A-Z.]{4,}" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <span for="phone">Phone</span>
+                    <input type="text" name="phone" class="form-control" pattern="[0-9+]{10,15}" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <span for="email">Email</span>
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Enter email id" required>
+                </div>
+                <input type="submit" class="btn btn-primary" name="confirm" value="Confirm appointment">
+            </form>
+            </div>
+        </div>
+    </div>
+{%endblock%}

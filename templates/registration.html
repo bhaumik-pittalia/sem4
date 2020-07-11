@@ -1,0 +1,88 @@
+{%extends 'template.html'%}
+{%block title%}Fill Information{%endblock%}
+{%block script%}
+<script type="text/javascript">
+    window.onload = function(){
+         //document.getElementById('home').style.display = "none"
+         document.getElementById('schedule').style.display = "none"
+         document.getElementById('link').style.display = "none"
+    }
+    $(document).ready(function(){
+
+        $('form').on('submit', function(event) {
+
+        $.ajax({
+            data : {
+                id : $('#id').val(),
+                name : $('#name').val(),
+                phone : $('#phone').val(),
+                address : $('#address').val()
+            },
+            type : 'POST',
+            url : '/registration/save'
+        })
+        .done(function(data) {
+            if (data.insert) 
+            {
+                $('#insertAlert').show();
+                $('#updateAlert').hide();
+                $('#signup-alert').show();
+            }
+            else 
+            {
+                $('#updateAlert').text(data.update).show();
+                $('#insertAlert').hide();
+            }
+        });
+        event.preventDefault();
+    });
+
+    });
+</script>
+{%endblock%}
+{%block body%}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6"><br/>
+                        <div id="insertAlert" class="alert alert-success" role="alert" style="display:none;">
+                            Successfully inserted now <a href="/schedule" class="alert-link"> click here</a> for schedule
+                        </div>
+                        <div id="updateAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+                <div class="card">
+                    <div class="card-header">
+                       {{resource and "Update Profile" or "Fill Your Information"}}
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" class="was-validated">
+                            <div class="form-group" hidden>
+                                <span for="id">Key</span>
+                                <input class="form-control" name="id" id="id" value="{{resource and resource.key.urlsafe() or ''}}">
+                            </div>
+                            <div class="form-group">
+                                <span for="name">Name</span>
+                                <input class="form-control" name="resource_name" id="name" pattern="[a-z A-Z.]{4,}" value="{{resource and resource.name or ''}}" placeholder="Enter name" required>
+                            </div>
+                            <div class="form-group">
+                                <span for="phone">Phone</span>
+                                <input class="form-control" name="resource_phone" id="phone" pattern="[+0-9]{10,15}" value="{{resource and resource.phone or ''}}" placeholder="Enter phone no" required>
+                            </div>
+                            <div class="form-group">
+                                <span for="address">Address</span>
+                                <textarea class="form-control" name="resource_address" id="address" pattern=".{4,}" rows="3" required>{{resource and resource.address or ""}}</textarea>
+                            </div>
+                            <input type="submit" id="submit" value="{{ resource and 'Update profile' or 'Create profile'}}" class="btn btn-outline-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6"><br/><br/><br/><br/>
+                <div id="signup-alert" class="alert alert-success" role="alert" style="display: none;">
+                  <h4 class="alert-heading">Well done!</h4>
+                  <p>Aww yeah, you have successfully signup for this appoitment scheduling web application. This web application is going to help you to schedule your time in day to day life as you wish to send your appointment schedule for appointment.</p>
+                  <hr>
+                  <p class="mb-0">You can manage your own schedule and make your day easier.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock%}

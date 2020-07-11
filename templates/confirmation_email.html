@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<table width="100%">
+		<tr>
+			<th bgcolor="#658" style="color: #FFFF;font-size: 18px" height="100px">Appointment confirmed!!</th>
+		</tr>
+		<tr>
+			<td>
+				<p>Hey {{appointment.name}},</p>
+
+                        <p>I have confirmed you for an appointment on {{appointment.date}} & {{convert12(appointment.time_from)}} to {{convert12(appointment.time_to)}} with {{resource.name}} at {{resource.address}}. If you have questions before your appointment, use the contact details below to get in touch with me.</p>
+                        <p>
+                        	Contact no : {{resource.phone}} <br/>
+                        	Email : {{resource.email}}
+                        </p>
+                        <p>You can cancel and view the appointment detail by clicking on below link</p>
+                        <p>{{link}}</p>
+                        <p>Thanks for the appointment</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<hr/>
+			</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td>Name : </td>
+			<td>{{appointment.name}}</td>
+		</tr>
+		<tr>
+			<td>Resource Name : </td>
+			<td>{{resource.name}}</td>
+		</tr>
+		<tr>
+			<td>Phone : </td>
+			<td>{{appointment.phone}}</td>
+		</tr>
+		<tr>
+			<td>Email : </td>
+			<td>{{appointment.email}}</td>
+		</tr>
+		<tr>
+			<td>Date : </td>
+			<td>{{appointment.date}}</td>
+		</tr>
+		<tr>
+			<td>Time from : </td>
+			<td>{{convert12(appointment.time_from)}}</td>
+		</tr>
+		<tr>
+			<td>Time to : </td>
+			<td>{{convert12(appointment.time_to)}}</td>
+		</tr>
+	</table>
+</body>
+</html>

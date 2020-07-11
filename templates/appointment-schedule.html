@@ -1,0 +1,76 @@
+{%extends 'template.html'%}
+
+{%block title%}Appointment schedule{%endblock%}
+{%block menu%}{%endblock%}
+
+{%block body%}
+    <br/>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    Choose appointment
+                </div>
+                <input type="text" name="monday" value="{{monday and '1'}}" id="monday" hidden>
+                <input type="text" name="tuesday" value="{{tuesday and '2'}}" id="tuesday" hidden>
+                <input type="text" name="wednesday" value="{{wednesday and '3'}}" id="wednesday" hidden>
+                <input type="text" name="thursday" value="{{thursday and '4'}}" id="thursday" hidden>
+                <input type="text" name="frieday" value="{{frieday and '5'}}" id="frieday" hidden>
+                <input type="text" name="saturday" value="{{saturday and '6'}}" id="saturday" hidden>
+                <div class="card-body">
+                    <div id="calendar-container">
+                        <div id="calendar-header">
+                            <select id="calendar-month-year" onchange="changed_month()">
+                            {%if d and m and y%}
+                                <option value="{{m}} 1 {{y}}" selected>{{m}} {{y}}</option>
+                            {%endif%}
+                            </select>
+                        </div>
+                        <div id="calendar-dates"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            {%if schedule%}
+            <div class="card">
+                <div class="card-header">
+                    {{day}} slots for {{d}} / {{m}} / {{y}}
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Time From</th>
+                                <th>Time To</th>
+                                <th>Select</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {%for schedule in schedule%}
+                            {%if appointment%}
+                            <tr>
+                                {%if schedule.time_from not in appointment_times%}
+                                <td>{{convert12(schedule.time_from)}}</td>
+                                <td>{{convert12(schedule.time_to)}}</td>
+                                <td><a href="/user-info/{{d}}/{{m}}/{{y}}/{{resource.key.urlsafe()}}/{{schedule.key.urlsafe()}}"><button class="btn btn-primary btn-sm">Continue</button></a></td>
+                                {%endif%}
+                            </tr>
+                            {%else%}
+                            <tr>
+                                <td>{{convert12(schedule.time_from)}}</td>
+                                <td>{{convert12(schedule.time_to)}}</td>
+                                <td><a href="/user-info/{{d}}/{{m}}/{{y}}/{{resource.key.urlsafe()}}/{{schedule.key.urlsafe()}}"><button class="btn btn-primary btn-sm">Continue</button></a></td>
+                            </tr>
+                            {%endif%}
+                        {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {%endif%}
+        </div>
+      </div>
+    </div>
+{%endblock%}

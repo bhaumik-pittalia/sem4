@@ -1,0 +1,85 @@
+{%extends 'template.html'%}
+{%block title%}Appointment link{%endblock%}
+{%block script%}
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+            $('#copy').on('click',function(){
+                $('#link-address').select();
+                document.execCommand("copy");
+                alert('Link copied');
+            });
+            
+            $('#send').on('click',function(){
+                $.ajax({
+                    data : {
+                            link : $('#link-address').val(),
+                            email : $('#email').val()
+                    },
+                    type : 'POST',
+                    url : '/send-email'
+                })
+                .done(function(data){
+                    if(data.success)
+                    {
+                        $('#alert-success').text(data.success).show();
+                        $('#alert-fail').hide();
+                    }
+                    else
+                    {
+                        $('#alert-success').hide();
+                        $('#alert-fail').text(data.fail).show();
+                    }
+                });
+                $('#close').click();
+            });
+        });
+    </script>
+{%endblock%}
+{%block body%}
+{%if context.user%}
+    <br/>
+    <div class="container">
+        <div class="col-sm-12">
+                <div class="alert alert-success" id="alert-success" style="display: none;"></div>
+                <div class="alert alert-danger" id="alert-fail" style="display: none;"></div> 
+            <div class="card">
+                <div class="card-header">
+                    Link for user
+                </div>
+                <div class="card-body">
+                    <span for="link">Link</span>
+                    <input type="text" class="form-control" name="link" value="{{link}}{{resource.key.urlsafe()}}" id="link-address">
+                    <br/>
+                    <button type="button" class="btn btn-primary" id="copy">Copy link</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#send-email">Send email</button>
+                </div>
+            </div>
+            <div class="modal fade" id="send-email" tabindex="-1" role="dialog" aria-labelledby="sendEmailLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Share link</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Email address:</label>
+                    <input type="text" class="form-control" id="email">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="send" class="btn btn-primary">Send</button>
+              </div>
+            </div>
+        </div>
+</div>
+        </div>
+    </div>
+{%endif%}
+{%endblock%}

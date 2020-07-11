@@ -1,0 +1,97 @@
+{%extends 'template.html'%}
+{%block title%}Appointment confirmation{%endblock%}
+{%block menu%}{%endblock%}
+
+{%block script%}
+	<script type="text/javascript">
+		$('document').ready(function(){
+			$('#gcalendar-url').on('click',function(){
+				var date = document.getElementById('date').value;
+				var time_from = document.getElementById('time_from').value;
+				var time_to = document.getElementById('time_to').value;
+				var resource = document.getElementById('resource').value;
+				var resource_address = document.getElementById('resource_address').value;
+				var time_from_date = new Date(date+" "+time_from).toUTCString()
+				var time_to_date = new Date(date+" "+time_to).toUTCString()
+				var from = time_from_date.slice(17,25)
+				var to = time_to_date.slice(17,25)
+				window.location.assign("https://www.google.com/calendar/render?action=TEMPLATE&text=appointment&details=appointment for "+resource+"&location="+resource_address+"&dates="+date.slice(0,4)+""+date.slice(5,7)+""+date.slice(8,10)+"T"+from.slice(0,2)+""+from.slice(3,5)+""+from.slice(6,8)+"Z%2F"+date.slice(0,4)+""+date.slice(5,7)+""+date.slice(8,10)+"T"+to.slice(0,2)+""+to.slice(3,5)+""+to.slice(6,8)+"Z");
+			});
+		});
+	</script>
+{%endblock%}
+
+{%block body%}
+	<div class="container">
+		<div class="row">
+        <div class="col-md-9">
+		<div class="card">
+				<div class="card-header">
+					Appointment confirmed!!
+				</div>
+				<div class="card-body">
+					<p>Hey {{appointment.name}},</p>
+
+                        <p>I have confirmed you for an appointment on {{appointment.date}} & {{convert12(appointment.time_from)}} to {{convert12(appointment.time_to)}} with {{resource.name}} at {{resource.address}}. If you have questions before your appointment, use the contact details below to get in touch with me.</p>
+                        <p>Contact no. {{resource.phone}}</p>
+
+                        <p>Thanks for the appointment</p>
+                        
+            	<hr/>
+				<div class="row">
+					<div class="col">Name:</div>
+					<div class="col">{{appointment.name}}</div>
+				</div>
+				<div class="row">
+					<div class="col">Resource Name:</div>
+					<div class="col">{{resource.name}}</div>
+					<input id="resource" value="{{resource.name}}" hidden>
+					<input id="resource_address" value="{{resource.address}}" hidden>
+				</div>
+				<div class="row">
+					<div class="col">Phone:</div>
+					<div class="col">{{appointment.phone}}</div>
+				</div>
+				<div class="row">
+					<div class="col">email:</div>
+					<div class="col">{{appointment.email}}</div>
+				</div>
+				<div class="row">
+					<div class="col">Date:</div>
+					<div class="col">{{appointment.date}}</div>
+					<input id="date" value="{{appointment.date}}" hidden>
+				</div>
+				<div class="row">
+					<div class="col">Time From:</div>
+					<div class="col">{{convert12(appointment.time_from)}}</div>
+					<input id="time_from" value="{{appointment.time_from}}" hidden>
+				</div>
+				<div class="row">
+					<div class="col">Time To:</div>
+					<div class="col">{{convert12(appointment.time_to)}}</div>
+					<input id="time_to" value="{{appointment.time_to}}" hidden>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="form-group" hidden>
+			<div class="col">id:</div>
+			<div class="col"><input type="text" name="id" value="{{appointment.key.urlsafe()}}"></div>
+		</div>
+		<br/>
+		<div>
+			<a href="/appointment/cancel/{{appointment.key.urlsafe()}}"><button type="submit" class="btn btn-outline-danger btn-sm col-12">Cancel appointment</button></a>
+        </div>
+        <br/>
+       	<div>
+           	<a href="/appointment/reschedule/{{resource.key.urlsafe()}}/{{appointment.key.urlsafe()}}"><button type="button" class="btn btn-outline-danger btn-sm col-12">Cancel & Reschedule appointment</button></a>
+        </div>
+        <br/>
+        <div>
+           	<button type="button" id="gcalendar-url" class="btn btn-outline-primary btn-sm col-12">Generate Google calander </button>
+        </div>
+	</div>
+</div>
+</div>
+{%endblock%}
